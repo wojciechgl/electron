@@ -95,7 +95,7 @@ BrowserContext::~BrowserContext() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   NotifyWillBeDestroyed(this);
   ShutdownStoragePartitions();
-  if (BrowserThread::IsMessageLoopValid(BrowserThread::IO)) {
+  if (BrowserThread::IsThreadInitialized(BrowserThread::IO)) {
     BrowserThread::DeleteSoon(BrowserThread::IO, FROM_HERE,
                               resource_context_.release());
     BrowserThread::PostTask(
