@@ -98,7 +98,6 @@ void InitializeBindings(v8::Local<v8::Object> binding,
   b.SetMethod("hang", AtomBindings::Hang);
   b.SetMethod("getArgv", GetArgv);
   b.SetMethod("getHeapStatistics", &AtomBindings::GetHeapStatistics);
-  b.SetMethod("getProcessMemoryInfo", &AtomBindings::GetProcessMemoryInfo);
   b.SetMethod("getSystemMemoryInfo", &AtomBindings::GetSystemMemoryInfo);
 
   // Pass in CLI flags needed to setup the renderer
