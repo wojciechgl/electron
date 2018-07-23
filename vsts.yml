@@ -47,7 +47,7 @@ steps:
     echo 'Testing Electron build'
     mkdir junit
     export MOCHA_FILE="junit/test-results.xml"
-    export MOCHA_REPORTER="mocha-junit-reporter"
+    export MOCHA_REPORTER="mocha-circleci-reporter"
     if [ "$ELECTRON_RELEASE" == "1" ]; then
       script/test.py --ci --rebuild_native_modules -c R
     else
