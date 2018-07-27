@@ -226,6 +226,7 @@ bool RendererClientBase::OverrideCreatePlugin(
 
 content::BrowserPluginDelegate* RendererClientBase::CreateBrowserPluginDelegate(
     content::RenderFrame* render_frame,
+    const content::WebPluginInfo& info,
     const std::string& mime_type,
     const GURL& original_url) {
   if (mime_type == content::kBrowserPluginMimeType) {

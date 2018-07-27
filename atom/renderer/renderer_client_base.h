@@ -48,6 +48,7 @@ class RendererClientBase : public content::ContentRendererClient {
                             blink::WebPlugin** plugin) override;
   content::BrowserPluginDelegate* CreateBrowserPluginDelegate(
       content::RenderFrame* render_frame,
+      const content::WebPluginInfo& info,
       const std::string& mime_type,
       const GURL& original_url) override;
   void AddSupportedKeySystems(
