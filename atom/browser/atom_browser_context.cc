@@ -17,6 +17,7 @@
 #include "atom/browser/net/atom_url_request_job_factory.h"
 #include "atom/browser/net/cookie_details.h"
 #include "atom/browser/net/http_protocol_handler.h"
+#include "atom/browser/special_storage_policy.h"
 #include "atom/browser/web_view_manager.h"
 #include "atom/common/atom_version.h"
 #include "atom/common/chrome_version.h"
@@ -70,7 +71,8 @@ std::string RemoveWhitespace(const std::string& str) {
 AtomBrowserContext::AtomBrowserContext(const std::string& partition,
                                        bool in_memory,
                                        const base::DictionaryValue& options)
-    : brightray::BrowserContext(partition, in_memory) {
+    : brightray::BrowserContext(partition, in_memory),
+      storage_policy_(new SpecialStoragePolicy) {
   // Construct user agent string.
   Browser* browser = Browser::Get();
   std::string name = RemoveWhitespace(browser->GetName());
@@ -187,6 +189,10 @@ content::PermissionManager* AtomBrowserContext::GetPermissionManager() {
   if (!permission_manager_.get())
     permission_manager_.reset(new AtomPermissionManager);
   return permission_manager_.get();
+}
+
+storage::SpecialStoragePolicy* AtomBrowserContext::GetSpecialStoragePolicy() {
+  return storage_policy_.get();
 }
 
 std::unique_ptr<net::CertVerifier> AtomBrowserContext::CreateCertVerifier(
