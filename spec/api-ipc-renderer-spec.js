@@ -183,4 +183,17 @@ describe('ipc renderer module', () => {
       w.loadURL(`file://${path.join(fixtures, 'api', 'remote-event-handler.html')}`)
     })
   })
+
+  describe('ipcRenderer.on', () => {
+    it('is not used for internals', (done) => {
+      w = new BrowserWindow({ show: false })
+      w.webContents.once('did-finish-load', async () => {
+        const script = `require('electron').ipcRenderer.eventNames()`
+        const result = await w.webContents.executeJavaScript(script)
+        expect(result).to.deep.equal([])
+        done()
+      })
+      w.loadURL('about:blank')
+    })
+  })
 })

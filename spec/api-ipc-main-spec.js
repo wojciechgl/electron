@@ -3,6 +3,7 @@
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const path = require('path')
+const cp = require('child_process')
 const {closeWindow} = require('./window-helpers')
 
 const {expect} = chai
@@ -66,6 +67,22 @@ describe('ipc main module', () => {
       })
 
       w.loadURL(`file://${path.join(fixtures, 'api', 'render-view-deleted.html')}`)
+    })
+  })
+
+  describe('ipcMain.on', () => {
+    it('is not used for internals', (done) => {
+      const appPath = path.join(__dirname, 'fixtures', 'api', 'ipc-main-listeners')
+      const electronPath = remote.getGlobal('process').execPath
+      let output = ''
+      let appProcess = cp.spawn(electronPath, [appPath])
+
+      appProcess.stdout.on('data', (data) => { output += data })
+      appProcess.stdout.on('end', () => {
+        output = JSON.parse(output)
+        expect(output).to.deep.equal(['error'])
+        done()
+      })
     })
   })
 })
