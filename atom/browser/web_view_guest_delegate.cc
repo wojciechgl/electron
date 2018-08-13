@@ -168,6 +168,10 @@ void WebViewGuestDelegate::OnZoomLevelChanged(
   }
 }
 
+void WebViewGuestDelegate::OnZoomControllerWebContentsDestroyed() {
+  embedder_zoom_controller_ = nullptr;
+}
+
 void WebViewGuestDelegate::UpdateGuestSize(const gfx::Size& new_size,
                                            bool due_to_auto_resize) {
   if (due_to_auto_resize)
