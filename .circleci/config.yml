@@ -169,6 +169,7 @@ gn-build-steps: &gn-build-steps
             --name "src/electron" \
             --unmanaged \
             --cache-dir "$HOME/.gclient-cache" \
+            $GCLIENT_EXTRA_ARGS \
             "$CIRCLE_REPOSITORY_URL"
 
           gclient sync --with_branch_heads --with_tags
@@ -427,6 +428,7 @@ jobs:
       DISPLAY: ':99.0'
       GN_CONFIG: //electron/build/args/debug.gn
       GN_EXTRA_ARGS: 'target_cpu = "arm"'
+      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_arm=True'
       RUN_TESTS: false
     docker:
       - image: electronbuilds/electron:0.0.8
@@ -438,6 +440,7 @@ jobs:
       DISPLAY: ':99.0'
       GN_CONFIG: //electron/build/args/debug.gn
       GN_EXTRA_ARGS: 'target_cpu = "arm64"'
+      GCLIENT_EXTRA_ARGS: '--custom-var=checkout_arm=True'
       RUN_TESTS: false
     docker:
       - image: electronbuilds/electron:0.0.8
