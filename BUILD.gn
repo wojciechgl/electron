@@ -183,12 +183,6 @@ asar("app2asar") {
   root = "default_app"
 }
 
-group("electron") {
-  deps = [
-    ":electron_lib",
-  ]
-}
-
 static_library("electron_lib") {
   configs += [ "//v8:external_startup_data" ]
 
@@ -625,6 +619,17 @@ if (is_mac) {
       "//ui/strings",
     ]
 
+    data = []
+
+    data += [ "$root_out_dir/resources.pak" ]
+    data += [ "$root_out_dir/chrome_100_percent.pak" ]
+    if (enable_hidpi) {
+      data += [ "$root_out_dir/chrome_200_percent.pak" ]
+    }
+    foreach(locale, locales) {
+      data += [ "$root_out_dir/locales/$locale.pak" ]
+    }
+
     public_deps = [
       "//tools/v8_context_snapshot:v8_context_snapshot",
     ]
@@ -668,4 +673,23 @@ if (is_mac) {
       }
     }
   }
+}
+
+_runtime_deps_file =
+    "$root_out_dir/gen.runtime/electron_app.runtime_deps"
+
+group("electron_runtime_deps") {
+  data_deps = [ ":electron_app" ]
+  write_runtime_deps = _runtime_deps_file
+}
+
+action("build_zip") {
+  script = "build/zip.py"
+  deps = [ ":electron_runtime_deps" ]
+  outputs = [ "$root_build_dir/dist.zip" ]
+  args = rebase_path(outputs + [ _runtime_deps_file ], root_build_dir)
+}
+
+group("electron") {
+  data_deps = [ ":electron_app" ]
 }
